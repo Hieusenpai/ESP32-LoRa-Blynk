@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trạm đo môi trường thông minh — Dashboard</title>
+  <title>Trường Đại Học Kinh Tế Kỹ Thuật và Công Nghiệp Hà Nội — Dashboard</title>
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -47,25 +47,26 @@
              alt="Logo Trái Đất" class="w-12 h-12 rounded-xl object-cover shadow-lg ring-2 ring-blue-400"/>
         <div>
           <p class="text-sm text-gray-400">Trạm</p>
-          <h1 class="text-lg font-semibold text-white">Môi Trường</h1>
+          <h1 class="text-lg font-semibold text-white">Đo Môi trường</h1>
         </div>
       </div>
 
       <div class="bg-white/5 rounded-xl p-4 text-sm text-slate-300 shadow-inner border border-white/10 space-y-2">
         <div class="flex justify-between"><span class="text-gray-400">📍 Địa điểm:</span><span class="font-semibold text-blue-300">P.Lĩnh Nam</span></div>
         <div class="flex justify-between"><span class="text-gray-400">🟢 Trạng thái:</span><span class="font-semibold text-green-400">Đang hoạt động</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">🕒 Cập nhật:</span><span class="font-semibold text-yellow-300">10 giây/lần</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">🕒 Cập nhật:</span><span class="font-semibold text-yellow-300">1 giây/lần</span></div>
         <div class="flex justify-between"><span class="text-gray-400">🔗 Kết nối:</span><span class="font-semibold text-cyan-300">LoRa / Blynk IoT</span></div>
       </div>
 
       <div class="flex-1"></div>
+      <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-300">🗑️ Xóa lịch sử</button>
       <div class="hidden lg:block text-slate-500 text-xs">© 2025 • Demo</div>
     </aside>
 
     <!-- Main -->
     <div class="flex-1 p-6 lg:p-10">
       <div class="mb-8">
-        <h1 class="text-3xl font-extrabold"><span class="title-gradient">Trạm đo môi trường thông minh</span></h1>
+        <h1 class="text-3xl font-extrabold"><span class="title-gradient">Trường Đại Học Kinh Tế Kỹ Thuật Và Công Nghiệp Hà Nội</span></h1>
         <div class="text-slate-400 text-sm mt-1">Giám sát thời gian thực • Dữ liệu từ Blynk</div>
       </div>
 
@@ -109,7 +110,10 @@
           <h3 id="detailTitle" class="text-xl font-bold">Chi tiết</h3>
           <div class="text-slate-400 text-sm">Lịch sử cập nhật</div>
         </div>
-        <button onclick="closeDetail()" class="px-3 py-1 bg-red-600 rounded-md">Đóng</button>
+        <div class="flex gap-2">
+          <button id="unitBtn" onclick="toggleUnit()" class="px-3 py-1 bg-blue-600 rounded-md">Đổi đơn vị</button>
+          <button onclick="closeDetail()" class="px-3 py-1 bg-red-600 rounded-md">Đóng</button>
+        </div>
       </div>
       <canvas id="detailChart" height="200"></canvas>
       <ul id="detailList" class="mt-4 text-sm max-h-52 overflow-auto space-y-2 text-slate-300"></ul>
@@ -118,13 +122,19 @@
 
   <script>
     const BLYNK_TOKEN = "DtPS7NQUTvQINuA53MLiOTiHnVR_WLm6";
-    const INTERVAL_MS = 10000;
-    const history = { temperature: [], humidity: [], pm: [], voltage: [] };
-    let mainChart, detailChart, activeKey = null;
+    const INTERVAL_MS = 1000;
+
+    // --- Load history từ localStorage ---
+    const history = JSON.parse(localStorage.getItem("historyData") ||
+      '{"temperature":[],"humidity":[],"pm":[],"voltage":[]}');
+
+    let mainChart, detailChart, activeKey = null, unitMode = {}; // unitMode[key] = 'alt'
 
     function pushHistory(k, v, t = Date.now()) {
-      history[k].push({ t, v }); if (history[k].length > 100) history[k].shift();
+      history[k].push({ t, v });
+      if (history[k].length > 1000) history[k].shift(); // lưu tối đa 1000 điểm
     }
+
     const getLast = k => history[k].length ? history[k][history[k].length - 1].v : 0;
 
     async function fetchBlynkData() {
@@ -137,6 +147,8 @@
         pushHistory("humidity", hum, now);
         pushHistory("pm", pm, now);
         pushHistory("voltage", volt, now);
+        localStorage.setItem("historyData", JSON.stringify(history)); // 💾 Lưu lại
+
         document.getElementById("temperature-val").innerText = temp + " °C";
         document.getElementById("humidity-val").innerText = hum + " %";
         document.getElementById("pm-val").innerText = pm + " µg/m³";
@@ -175,7 +187,7 @@
       mainChart.update();
     }
 
-    // Modal functions
+    // --- Modal ---
     function openDetail(key) {
       activeKey = key;
       document.getElementById('detailPanel').classList.remove('hidden');
@@ -196,6 +208,28 @@
       if (detailChart) detailChart.destroy();
     }
 
+    // --- Đổi đơn vị ---
+    function toggleUnit() {
+      if (!activeKey) return;
+      unitMode[activeKey] = !unitMode[activeKey];
+      updateDetailChart(activeKey);
+    }
+
+    function convertValue(key, v) {
+      if (!unitMode[key]) return v;
+      switch (key) {
+        case 'temperature': return (v * 9/5 + 32).toFixed(1); // °F
+        case 'pm': return Math.round(v * 2); // đơn giản: µg/m³ *2 = AQI xấp xỉ
+        case 'voltage': return (v * 1000).toFixed(0); // mV
+        default: return v;
+      }
+    }
+
+    function getUnitLabel(key) {
+      if (!unitMode[key]) return {temperature:"°C",humidity:"%",pm:"µg/m³",voltage:"V"}[key];
+      return {temperature:"°F",humidity:"%",pm:"AQI",voltage:"mV"}[key];
+    }
+
     function createDetailChart(key) {
       const ctx = document.getElementById('detailChart').getContext('2d');
       if (detailChart) detailChart.destroy();
@@ -203,7 +237,12 @@
         type: 'line',
         data: {
           labels: history[key].map(p => new Date(p.t).toLocaleTimeString()),
-          datasets: [{ label: key, data: history[key].map(p => p.v), borderColor: '#00d2ff', backgroundColor: 'rgba(0,210,255,0.1)' }]
+          datasets: [{
+            label: key,
+            data: history[key].map(p => convertValue(key, p.v)),
+            borderColor: '#00d2ff',
+            backgroundColor: 'rgba(0,210,255,0.1)'
+          }]
         },
         options: { plugins: { legend: { display: false } },
           scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } } }
@@ -214,7 +253,7 @@
     function updateDetailChart(key) {
       if (!detailChart) return;
       detailChart.data.labels = history[key].map(p => new Date(p.t).toLocaleTimeString());
-      detailChart.data.datasets[0].data = history[key].map(p => p.v);
+      detailChart.data.datasets[0].data = history[key].map(p => convertValue(key, p.v));
       detailChart.update();
       updateDetailList(key);
     }
@@ -224,12 +263,20 @@
       ul.innerHTML = '';
       [...history[key]].slice(-20).reverse().forEach(it => {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${new Date(it.t).toLocaleTimeString()}</span> <strong>${it.v}</strong>`;
+        li.innerHTML = `<span>${new Date(it.t).toLocaleTimeString()}</span> <strong>${convertValue(key,it.v)} ${getUnitLabel(key)}</strong>`;
         ul.appendChild(li);
       });
     }
 
+    function clearHistory() {
+      localStorage.removeItem("historyData");
+      Object.keys(history).forEach(k => history[k] = []);
+      if (mainChart) updateMainChart();
+      alert("🗑️ Đã xóa toàn bộ lịch sử lưu cục bộ!");
+    }
+
     createMainChart();
+    updateMainChart(); // load dữ liệu cũ
     fetchBlynkData();
     setInterval(fetchBlynkData, INTERVAL_MS);
   </script>
