@@ -1,6 +1,6 @@
 // Lưu log trung bình mỗi giờ
 let hourlyData = []; // Lưu tất cả dữ liệu trong giờ
-let lastLogTime = 0;
+let lastLogTime = Number(localStorage.getItem('lastLogTime')) || Date.now(); // Khôi phục thời gian từ localStorage
 const LOG_INTERVAL = 60 * 60 * 1000; // 1 giờ
 const LOG_RETENTION = 2 * 24 * 60 * 60 * 1000; // 2 ngày
 
