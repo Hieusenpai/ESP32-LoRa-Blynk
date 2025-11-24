@@ -405,7 +405,7 @@
     <div class="modal-overlay" id="historyModal" onclick="closeHistoryModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h2>📜 Lịch sử 2 ngày</h2>
+                <h2>📜 Lịch sử </h2>
                 <button class="close-btn" onclick="closeHistoryModal()">×</button>
             </div>
             <div class="log-list" id="logList">
@@ -413,84 +413,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Mở modal
-        function openHistoryModal() {
-            const modal = document.getElementById('historyModal');
-            modal.classList.add('active');
-            loadHistoryLogs();
-        }
-
-        // Đóng modal
-        function closeHistoryModal(event) {
-            if (!event || event.target.id === 'historyModal') {
-                const modal = document.getElementById('historyModal');
-                modal.classList.remove('active');
-            }
-        }
-
-        // Đóng modal khi nhấn ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeHistoryModal();
-            }
-        });
-
-        // Load và hiển thị logs
-        function loadHistoryLogs() {
-            const logs = JSON.parse(localStorage.getItem('sensorLogs') || '[]');
-            const logList = document.getElementById('logList');
-            
-            if (logs.length === 0) {
-                logList.innerHTML = '<div class="empty-message">📭 Chưa có dữ liệu lịch sử!</div>';
-                return;
-            }
-            
-            logList.innerHTML = '';
-            
-            logs.reverse().forEach((log, index) => {
-                const logItem = document.createElement('div');
-                logItem.className = 'log-item';
-                logItem.innerHTML = `
-                    <div class="log-time">
-                        🕐 ${log.date}
-                    </div>
-                    <div class="log-data">
-                        <div class="log-data-item">
-                            <span class="log-icon">🌡️</span>
-                            <div>
-                                <div class="log-label">Nhiệt độ</div>
-                                <div class="log-value">${log.temperature}°C</div>
-                            </div>
-                        </div>
-                        <div class="log-data-item">
-                            <span class="log-icon">💧</span>
-                            <div>
-                                <div class="log-label">Độ ẩm</div>
-                                <div class="log-value">${log.humidity}%</div>
-                            </div>
-                        </div>
-                        <div class="log-data-item">
-                            <span class="log-icon">💨</span>
-                            <div>
-                                <div class="log-label">Bụi</div>
-                                <div class="log-value">${log.dust}</div>
-                            </div>
-                        </div>
-                        <div class="log-data-item">
-                            <span class="log-icon">⚡</span>
-                            <div>
-                                <div class="log-label">Điện áp</div>
-                                <div class="log-value">${log.voltage}V</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                logList.appendChild(logItem);
-            });
-        }
-    </script>
 </body>
 </html>
     <script src="script.js"></script>
