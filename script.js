@@ -240,7 +240,33 @@ async function updateData() {
         console.log("Lỗi API:", err);
     }
 }
+// ========== BẢNG QUY ĐỔI AQI - BẮT ĐẦU ==========
 
+// Mở modal AQI
+function openAQIModal() {
+    const modal = document.getElementById('aqiModal');
+    modal.classList.add('active');
+}
+
+// Đóng modal AQI
+function closeAQIModal(event) {
+    if (!event || event.target.id === 'aqiModal') {
+        const modal = document.getElementById('aqiModal');
+        modal.classList.remove('active');
+    }
+}
+
+// Thêm sự kiện ESC để đóng modal AQI
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const aqiModal = document.getElementById('aqiModal');
+        if (aqiModal && aqiModal.classList.contains('active')) {
+            closeAQIModal();
+        }
+    }
+});
+
+// ========== BẢNG QUY ĐỔI AQI - KẾT THÚC ==========
 // Cập nhật dữ liệu mỗi 3 giây
 setInterval(updateData, 3000);
 updateData(); // Gọi ngay lần đầu
