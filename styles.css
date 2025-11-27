@@ -302,7 +302,7 @@ body::after {
 .aqi-button {
     position: fixed;
     bottom: 30px;
-    right: 220px; /* Tăng khoảng cách với nút lịch sử */
+    right: 220px; /* Đặt bên trái nút lịch sử */
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -524,36 +524,40 @@ body::after {
 .aqi-modal-content::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
 }
+/* ========== RESPONSIVE CHO 2 NÚT ========== */
 
-/* Responsive */
-@media (max-width: 900px) {
-    .aqi-button {
-        bottom: 30px; /* Ngang hàng với nút lịch sử */
-        right: auto;
-        left: 20px; /* Nằm bên trái */
-        width: calc(50% - 25px); /* Chiếm 50% màn hình trừ khoảng cách */
-        padding: 12px 15px;
-        font-size: 14px;
-    }
-    
-    .history-button {
-        bottom: 30px;
-        right: 20px; /* Nằm bên phải */
-        left: auto;
-        width: calc(50% - 25px); /* Chiếm 50% màn hình trừ khoảng cách */
-        padding: 12px 15px;
-        font-size: 14px;
-    }
+/* Desktop - giữ nguyên vị trí ban đầu */
+.history-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
 }
 
-@media (max-width: 768px) {
+.history-button:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Tablet và màn hình nhỏ hơn */
+@media (max-width: 900px) {
     .aqi-button {
         bottom: 30px;
         left: 20px;
         right: auto;
         width: calc(50% - 25px);
-        padding: 12px 10px;
-        font-size: 13px;
+        padding: 12px 15px;
+        font-size: 14px;
     }
     
     .history-button {
@@ -561,7 +565,28 @@ body::after {
         right: 20px;
         left: auto;
         width: calc(50% - 25px);
-        padding: 12px 10px;
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .aqi-button {
+        bottom: 20px;
+        left: 15px;
+        right: auto;
+        width: calc(50% - 20px);
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+    
+    .history-button {
+        bottom: 20px;
+        right: 15px;
+        left: auto;
+        width: calc(50% - 20px);
+        padding: 12px 8px;
         font-size: 13px;
     }
 
@@ -589,24 +614,36 @@ body::after {
     }
 }
 
+/* Mobile nhỏ */
 @media (max-width: 600px) {
     .aqi-button {
-        bottom: 30px;
-        left: 20px;
+        bottom: 15px;
+        left: 10px;
         right: auto;
-        width: calc(50% - 25px);
-        padding: 10px 8px;
+        width: calc(50% - 15px);
+        padding: 10px 5px;
         font-size: 12px;
     }
     
     .history-button {
-        bottom: 30px;
-        right: 20px;
+        bottom: 15px;
+        right: 10px;
         left: auto;
-        width: calc(50% - 25px);
-        padding: 10px 8px;
+        width: calc(50% - 15px);
+        padding: 10px 5px;
         font-size: 12px;
     }
 }
 
-/* ========== BẢNG QUY ĐỔI AQI - KẾT THÚC ========== */
+/* Mobile rất nhỏ */
+@media (max-width: 400px) {
+    .aqi-button {
+        font-size: 11px;
+        padding: 8px 3px;
+    }
+    
+    .history-button {
+        font-size: 11px;
+        padding: 8px 3px;
+    }
+}
