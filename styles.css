@@ -302,7 +302,7 @@ body::after {
 .aqi-button {
     position: fixed;
     bottom: 30px;
-    right: 220px; /* Đặt bên trái nút lịch sử */
+    right: 220px; /* Tăng khoảng cách với nút lịch sử */
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -526,12 +526,43 @@ body::after {
 }
 
 /* Responsive */
+@media (max-width: 900px) {
+    .aqi-button {
+        bottom: 30px; /* Ngang hàng với nút lịch sử */
+        right: auto;
+        left: 20px; /* Nằm bên trái */
+        width: calc(50% - 25px); /* Chiếm 50% màn hình trừ khoảng cách */
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .history-button {
+        bottom: 30px;
+        right: 20px; /* Nằm bên phải */
+        left: auto;
+        width: calc(50% - 25px); /* Chiếm 50% màn hình trừ khoảng cách */
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 768px) {
     .aqi-button {
-        bottom: 90px;
+        bottom: 30px;
+        left: 20px;
+        right: auto;
+        width: calc(50% - 25px);
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+    
+    .history-button {
+        bottom: 30px;
         right: 20px;
-        padding: 12px 24px;
-        font-size: 14px;
+        left: auto;
+        width: calc(50% - 25px);
+        padding: 12px 10px;
+        font-size: 13px;
     }
 
     .aqi-modal-content {
@@ -560,9 +591,21 @@ body::after {
 
 @media (max-width: 600px) {
     .aqi-button {
-        width: calc(100% - 40px);
-        right: 20px;
+        bottom: 30px;
         left: 20px;
+        right: auto;
+        width: calc(50% - 25px);
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .history-button {
+        bottom: 30px;
+        right: 20px;
+        left: auto;
+        width: calc(50% - 25px);
+        padding: 10px 8px;
+        font-size: 12px;
     }
 }
 
