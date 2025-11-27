@@ -526,6 +526,8 @@ body::after {
 }
 /* ========== RESPONSIVE CHO 2 NÚT ========== */
 
+/* ========== RESPONSIVE CHO 2 NÚT ========== */
+
 /* Desktop - giữ nguyên vị trí ban đầu */
 .history-button {
     position: fixed;
@@ -552,7 +554,7 @@ body::after {
 /* Tablet và màn hình nhỏ hơn */
 @media (max-width: 900px) {
     .aqi-button {
-        bottom: 30px;
+        bottom: 30px !important;
         left: 20px;
         right: auto;
         width: calc(50% - 25px);
@@ -561,7 +563,7 @@ body::after {
     }
     
     .history-button {
-        bottom: 30px;
+        bottom: 30px !important;
         right: 20px;
         left: auto;
         width: calc(50% - 25px);
@@ -573,7 +575,7 @@ body::after {
 /* Mobile */
 @media (max-width: 768px) {
     .aqi-button {
-        bottom: 20px;
+        bottom: 20px !important;
         left: 15px;
         right: auto;
         width: calc(50% - 20px);
@@ -582,7 +584,7 @@ body::after {
     }
     
     .history-button {
-        bottom: 20px;
+        bottom: 20px !important;
         right: 15px;
         left: auto;
         width: calc(50% - 20px);
@@ -617,7 +619,7 @@ body::after {
 /* Mobile nhỏ */
 @media (max-width: 600px) {
     .aqi-button {
-        bottom: 15px;
+        bottom: 15px !important;
         left: 10px;
         right: auto;
         width: calc(50% - 15px);
@@ -626,7 +628,7 @@ body::after {
     }
     
     .history-button {
-        bottom: 15px;
+        bottom: 15px !important;
         right: 10px;
         left: auto;
         width: calc(50% - 15px);
@@ -638,11 +640,13 @@ body::after {
 /* Mobile rất nhỏ */
 @media (max-width: 400px) {
     .aqi-button {
+        bottom: 15px !important;
         font-size: 11px;
         padding: 8px 3px;
     }
     
     .history-button {
+        bottom: 15px !important;
         font-size: 11px;
         padding: 8px 3px;
     }
