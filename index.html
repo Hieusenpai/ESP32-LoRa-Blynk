@@ -400,7 +400,100 @@
     <button onclick="openHistoryModal()" class="history-button">
         📜 Xem lịch sử
     </button>
+<!-- Nút mở bảng quy đổi AQI -->
+<button onclick="openAQIModal()" class="aqi-button">
+    📊 Quy đổi PM2.5 - AQI
+</button>
 
+<!-- Modal bảng quy đổi AQI -->
+<div class="aqi-modal-overlay" id="aqiModal" onclick="closeAQIModal(event)">
+    <div class="aqi-modal-content" onclick="event.stopPropagation()">
+        <div class="aqi-modal-header">
+            <h2>📊 Bảng Quy Đổi PM2.5 sang AQI</h2>
+            <button class="aqi-close-btn" onclick="closeAQIModal()">×</button>
+        </div>
+
+        <div class="aqi-table">
+            <!-- Mức 1: Tốt -->
+            <div class="aqi-row good">
+                <div class="status-icon">😊</div>
+                <div class="aqi-range">0 - 50</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">0 - 9.0</div>
+                </div>
+                <div class="status-text">Tốt</div>
+            </div>
+
+            <!-- Mức 2: Trung bình -->
+            <div class="aqi-row moderate">
+                <div class="status-icon">🙂</div>
+                <div class="aqi-range">51 - 100</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">9.1 - 35.4</div>
+                </div>
+                <div class="status-text">Trung bình</div>
+            </div>
+
+            <!-- Mức 3: Không lành mạnh cho nhóm nhạy cảm -->
+            <div class="aqi-row unhealthy-sensitive">
+                <div class="status-icon">😐</div>
+                <div class="aqi-range">101 - 150</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">35.5 - 55.4</div>
+                </div>
+                <div class="status-text">Không khỏe mạnh<br>(nhóm nhạy cảm)</div>
+            </div>
+
+            <!-- Mức 4: Không lành mạnh -->
+            <div class="aqi-row unhealthy">
+                <div class="status-icon">😷</div>
+                <div class="aqi-range">151 - 200</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">55.5 - 125.4</div>
+                </div>
+                <div class="status-text">Không lành mạnh</div>
+            </div>
+
+            <!-- Mức 5: Rất không tốt -->
+            <div class="aqi-row very-unhealthy">
+                <div class="status-icon">😨</div>
+                <div class="aqi-range">201 - 300</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">125.5 - 225.4</div>
+                </div>
+                <div class="status-text">Rất không tốt</div>
+            </div>
+
+            <!-- Mức 6: Nguy hiểm -->
+            <div class="aqi-row hazardous">
+                <div class="status-icon">☠️</div>
+                <div class="aqi-range">301 - 500+</div>
+                <div class="pm-info">
+                    <div class="pm-label">PM2.5 (μg/m³)</div>
+                    <div class="pm-value">225.5+</div>
+                </div>
+                <div class="status-text">Nguy hiểm</div>
+            </div>
+        </div>
+
+        <div class="aqi-note">
+            <strong>📌 Lưu ý:</strong>
+            AQI (Air Quality Index) là chỉ số chất lượng không khí được tính từ nồng độ bụi PM2.5. 
+            Các giá trị trên giúp đánh giá mức độ ô nhiễm không khí và tác động đến sức khỏe. 
+            <br><br>
+            <strong>Khuyến nghị:</strong>
+            <br>• AQI 0-50: Chất lượng không khí tốt
+            <br>• AQI 51-100: Chấp nhận được
+            <br>• AQI 101-150: Hạn chế hoạt động ngoài trời cho người nhạy cảm
+            <br>• AQI 151+: Hạn chế hoạt động ngoài trời cho mọi người
+        </div>
+    </div>
+</div>
     <!-- Modal lịch sử -->
     <div class="modal-overlay" id="historyModal" onclick="closeHistoryModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -413,6 +506,7 @@
             </div>
         </div>
     </div>
+    
 </body>
 </html>
     <script src="script.js"></script>
